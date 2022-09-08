@@ -5,9 +5,9 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import net.archasmiel.processing.command.basic.SlashCommand;
+import net.archasmiel.processing.command.basic.Command;
 
-public class StartCommand extends SlashCommand {
+public class StartCommand extends Command {
 
 	public static final String PREFIX = "/";
 	public static final String NAME = "start";

@@ -2,7 +2,6 @@ package net.archasmiel.bot.thread;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import net.archasmiel.processing.command.CommandFactory;
 
 import java.util.List;
 

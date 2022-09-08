@@ -1,6 +1,7 @@
 package net.archasmiel.processing.command;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Message;
 import net.archasmiel.processing.command.advanced.StartCommand;
 import net.archasmiel.processing.command.basic.Command;
 import net.archasmiel.processing.command.error.InvalidCommand;
@@ -13,14 +14,16 @@ import java.util.regex.Pattern;
 
 public class CommandFactory {
 
-	private static final CommandFactory INSTANCE = new CommandFactory();
+	public static final CommandFactory INSTANCE = new CommandFactory();
 	private static final String letters = "a-zA-Zа-яА-Я";
 
-	public Command getCommand(TelegramBot bot, String command) {
-		if (!validCommand(command))
+	public Command getCommand(TelegramBot bot, Message msg) {
+		String text = msg.text();
+
+		if (!validCommand(text))
 			return new InvalidCommand(bot);
 
-		Pair<String, String> commandData = parseCommand(command);
+		Pair<String, String> commandData = parseCommand(text);
 		if (StartCommand.equalsTo(commandData.getKey(), commandData.getValue())) {
 			return new StartCommand(bot);
 		}

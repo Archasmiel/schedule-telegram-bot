@@ -1,23 +1,14 @@
 package net.archasmiel.bot.thread;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.GetFile;
-import com.pengrad.telegrambot.response.GetFileResponse;
 import net.archasmiel.parser.XLSXParser;
-import net.archasmiel.parser.sheetwork.SheetList;
 import net.archasmiel.processing.callback.CallbackFactory;
 import net.archasmiel.processing.command.CommandFactory;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateThread extends Thread {
 
@@ -48,13 +39,13 @@ public class UpdateThread extends Thread {
 		}
 
 		if (properties.containsAll(MESSAGE)) {
-			CommandFactory.getInstance().getCommand(bot, update.message().text()).process(update);
+			CommandFactory.INSTANCE.getCommand(bot, update.message()).process(update);
 			return;
 		}
 
 		if (properties.containsAll(CALLBACK)) {
-			CallbackQuery query = update.callbackQuery();
-			CallbackFactory.getInstance().getCallback(bot, query.data()).process(query);
+			CallbackFactory.INSTANCE.getCallback(bot, update.callbackQuery())
+				.process(update.callbackQuery());
 		}
 
 	}

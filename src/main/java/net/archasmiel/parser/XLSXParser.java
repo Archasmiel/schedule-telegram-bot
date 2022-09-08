@@ -30,7 +30,7 @@ public class XLSXParser {
 
 		try (InputStream in = new URL(url).openStream()) {
 			byte[] fileBytes = in.readAllBytes();
-			float fileSizeMB = fileBytes.length / 1_048_576f;
+			float fileSizeMB = fileBytes.length / 1_024_000f;
 
 			if (fileSizeMB < 1) {
 				SheetList list = XLSXParser.byteTableToList(fileBytes);

@@ -4,17 +4,10 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import net.archasmiel.bot.thread.UpdateListThread;
-import net.archasmiel.processing.command.CommandFactory;
 
 import java.util.List;
 
-public class BotListener implements UpdatesListener {
-
-	private final TelegramBot bot;
-
-	public BotListener(TelegramBot bot) {
-		this.bot = bot;
-	}
+public record BotListener(TelegramBot bot) implements UpdatesListener {
 
 	@Override
 	public int process(List<Update> list) {

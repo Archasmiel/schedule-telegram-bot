@@ -3,17 +3,15 @@ package net.archasmiel.parser;
 import java.util.Arrays;
 import java.util.List;
 
-public class Schedule {
+public class ScheduleMessage {
 
 	public static class Builder {
-
-		private Schedule schedule;
+		private final ScheduleMessage schedule;
 
 		public Builder() {
-			schedule = new Schedule();
+			schedule = new ScheduleMessage();
 			schedule.text = new StringBuilder();
 		}
-
 
 		public Builder addLine(String line) {
 			schedule.text.append(line);
@@ -45,14 +43,11 @@ public class Schedule {
 			return this;
 		}
 
-		public Schedule build() {
-			if (schedule == null)
-				throw new IllegalStateException("No schedule for build!");
+		public ScheduleMessage build() {
 			if (schedule.text.length() == 0)
 				throw new IllegalStateException("Schedule zero length!");
 			return schedule;
 		}
-
 	}
 
 	private StringBuilder text;
