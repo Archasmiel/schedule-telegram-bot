@@ -17,10 +17,10 @@ public class UpdateListThread extends Thread {
 
 	@Override
 	public void run() {
-		if (updates.isEmpty()) return;
-		updates.forEach(update ->
-			new UpdateThread(bot, update).start()
-		);
+		if (!updates.isEmpty())
+			updates.forEach(update ->
+				new UpdateThread(bot, update).start()
+			);
 	}
 
 }

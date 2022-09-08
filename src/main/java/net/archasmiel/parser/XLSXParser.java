@@ -21,30 +21,30 @@ public class XLSXParser {
 
 	}
 
-	public static SheetList readTableToList(TelegramBot bot, Document document) throws IOException {
-		String url = bot.getFullFilePath(
-			bot.execute(
-				new GetFile(document.fileId())
-			).file()
-		);
-
+	public static byte[] fileBytes(String url) throws IOException {
 		try (InputStream in = new URL(url).openStream()) {
-			byte[] fileBytes = in.readAllBytes();
-			float fileSizeMB = fileBytes.length / 1_024_000f;
-
-			if (fileSizeMB < 1) {
-				SheetList list = XLSXParser.byteTableToList(fileBytes);
-				System.out.printf("Received table %s -> %f MB%n", document.fileName(), fileSizeMB);
-				System.out.printf("%n%n%n");
-				return list;
-			}
-
-			throw new IOException("File size is bigger than 1 MB");
+			return in.readAllBytes();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IOException("Couldn't read file");
+		}
+	}
+
+	public static float fileSizeMB(byte[] bytes) {
+		return bytes.length/1024000f;
+	}
+
+	public static boolean isValidSize(byte[] bytes) {
+		return fileSizeMB(bytes) <= 1f;
+	}
+
+	public static SheetList readTableToList(TelegramBot bot, long chatID, String url) throws IOException {
+		byte[] fileBytes = fileBytes(url);
+		if (isValidSize(fileBytes)) {
+			return byteTableToList(fileBytes);
 		}
 
-		throw new IOException("Couldn't read file");
+		bot.execute(new SendMessage(chatID, "Помилка, розмір файлу не повинен перевищувати 1 МБ."));
+		throw new IllegalStateException("File size is bigger than 1 MB");
 	}
 
 	public static SheetList byteTableToList(byte[] fileBytes) {

@@ -9,8 +9,7 @@ import net.archasmiel.processing.command.basic.Command;
 
 public class StartCommand extends Command {
 
-	public static final String PREFIX = "/";
-	public static final String NAME = "start";
+	public static final String COMMAND = "/start";
 
 	private static final InlineKeyboardButton[][] MARKUP = {
 		{
@@ -47,15 +46,17 @@ public class StartCommand extends Command {
 		super(bot);
 	}
 
-	public static boolean equalsTo(String prefix, String name) {
-		return prefix.equals(PREFIX) && name.equals(NAME);
+	public static boolean equalsTo(String command) {
+		return command.equals(COMMAND);
 	}
 
 	@Override
 	public void process(Update update) {
 		bot.execute(
-			new SendMessage(update.message().chat().id(), "Оберіть потрібний варіант:")
-				.replyMarkup(new InlineKeyboardMarkup(MARKUP))
+			new SendMessage(
+				update.message().chat().id(),
+				"Оберіть потрібний варіант:"
+			).replyMarkup(new InlineKeyboardMarkup(MARKUP))
 		);
 	}
 
