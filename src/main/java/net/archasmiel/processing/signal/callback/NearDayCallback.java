@@ -1,13 +1,14 @@
-package net.archasmiel.processing.callback.advanced;
+package net.archasmiel.processing.signal.callback;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import net.archasmiel.processing.callback.basic.Callback;
+import net.archasmiel.processing.signal.basic.Signal;
 
 import java.util.List;
 
-public class NearDayCallback extends Callback {
+public class NearDayCallback extends Signal {
 
 	private static final List<String> CALLBACKS = List.of("today", "tomorrow");
 
@@ -20,7 +21,8 @@ public class NearDayCallback extends Callback {
 	}
 
 	@Override
-	public void process(CallbackQuery callback) {
+	public void process(Update update) {
+		CallbackQuery callback = update.callbackQuery();
 		String baseMessage;
 
 		if (callback.data().equals("today")) {

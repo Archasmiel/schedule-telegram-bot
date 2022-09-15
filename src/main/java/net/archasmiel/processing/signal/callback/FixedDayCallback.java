@@ -1,15 +1,16 @@
-package net.archasmiel.processing.callback.advanced;
+package net.archasmiel.processing.signal.callback;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import net.archasmiel.processing.callback.basic.Callback;
+import net.archasmiel.processing.signal.basic.Signal;
 
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
-public class FixedDayCallback extends Callback {
+public class FixedDayCallback extends Signal {
 
 	private static final List<String> CALLBACKS = List.of(
 		"day1_1", "day1_2",
@@ -41,7 +42,8 @@ public class FixedDayCallback extends Callback {
 	}
 
 	@Override
-	public void process(CallbackQuery callback) {
+	public void process(Update update) {
+		CallbackQuery callback = update.callbackQuery();
 		String[] split = callback.data().split("_");
 
 		if (split.length != 2 || !DAYS.containsKey(split[0]) || !NUMS.containsKey(split[1])) {

@@ -1,11 +1,11 @@
-package net.archasmiel.processing.command.error;
+package net.archasmiel.processing.signal.command;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import net.archasmiel.processing.command.basic.Command;
+import net.archasmiel.processing.signal.basic.Signal;
 
-public class UnknownCommand extends Command {
+public class UnknownCommand extends Signal {
 
 	public UnknownCommand(TelegramBot bot) {
 		super(bot);

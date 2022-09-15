@@ -29,9 +29,6 @@ public class Bot {
 	}
 
 	public static void main(String[] args) {
-
-
-
 		TelegramBot bot = new TelegramBot(getToken());
 		bot.setUpdatesListener(new BotListener(bot));
 	}
