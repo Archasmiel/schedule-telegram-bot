@@ -6,11 +6,12 @@ import net.archasmiel.processing.factory.CommandFactory;
 import net.archasmiel.processing.factory.GetFileFactory;
 import net.archasmiel.processing.factory.IFactory;
 import net.archasmiel.processing.signal.basic.Signal;
+import org.apache.commons.collections4.Factory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeneralManufacture {
+public class GeneralManufacture implements IManufacture {
 
 	public static final GeneralManufacture INSTANCE = new GeneralManufacture();
 
@@ -18,15 +19,18 @@ public class GeneralManufacture {
 	private static final IFactory<Signal> COMMANDS = CommandFactory.getFactory();
 	private static final IFactory<Signal> FILES = GetFileFactory.getFactory();
 
+	@Override
 	public IFactory<Signal> manufacture(Update update) {
 		List<String> spectre = getSpectre(update);
+
 
 		if (checkSpectre(spectre, CALLBACKS)) {
 			return CALLBACKS;
 		}
+
 		if (checkSpectre(spectre, FILES)) {
 			return FILES;
-		}
+		} else
 		if (checkSpectre(spectre, COMMANDS)) {
 			return COMMANDS;
 		}
@@ -34,7 +38,7 @@ public class GeneralManufacture {
 		throw new IllegalStateException("Not found factory spectre");
 	}
 
-	private boolean checkSpectre(List<String> spectre, IFactory<Signal> factory) {
+	private boolean checkSpectre(List<String> spectre, IFactory<? extends Signal> factory) {
 		return spectre.containsAll(factory.getSpectre());
 	}
 
@@ -45,7 +49,9 @@ public class GeneralManufacture {
 			res.add("c");
 		} else
 		if (update.message() != null) {
-			res.add("m");
+			if (update.message().text() != null) {
+				res.add("m");
+			}
 			if (update.message().document() != null) {
 				res.add("d");
 			}

@@ -1,4 +1,4 @@
-package net.archasmiel.parser;
+package net.archasmiel.parser.json;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Document;
@@ -29,22 +29,8 @@ public class XLSXParser {
 		}
 	}
 
-	public static float fileSizeMB(byte[] bytes) {
-		return bytes.length/1024000f;
-	}
-
-	public static boolean isValidSize(byte[] bytes) {
-		return fileSizeMB(bytes) <= 1f;
-	}
-
 	public static SheetList readTableToList(TelegramBot bot, long chatID, String url) throws IOException {
-		byte[] fileBytes = fileBytes(url);
-		if (isValidSize(fileBytes)) {
-			return byteTableToList(fileBytes);
-		}
-
-		bot.execute(new SendMessage(chatID, "Помилка, розмір файлу не повинен перевищувати 1 МБ."));
-		throw new IllegalStateException("File size is bigger than 1 MB");
+		return byteTableToList(fileBytes(url));
 	}
 
 	public static SheetList byteTableToList(byte[] fileBytes) {

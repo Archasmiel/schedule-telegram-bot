@@ -22,6 +22,4 @@ public class UpdateThread extends Thread {
 			.process(update);
 	}
 
-
-
 }

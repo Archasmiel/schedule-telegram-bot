@@ -1,6 +1,8 @@
 package net.archasmiel.processing.signal.files;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Document;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -14,19 +16,32 @@ public class GetScheduleFile extends Signal {
 	}
 
 	@Override
-	public void process(Update update) {
-		String url = bot.getFullFilePath(
-			bot.execute(
-				new GetFile(update.message().document().fileId())
-			).file()
-		);
+	public synchronized void process(Update update) {
+		Document document = update.message().document();
+		Message message = update.message();
 
-		Bot.users.add(String.valueOf(update.message().from().id()), url);
+		if (document.fileSize() / 1_000_024f <= 0.65f) {
+			String url = bot.getFullFilePath(
+				bot.execute(
+					new GetFile(document.fileId())
+				).file()
+			);
+
+			Bot.users.add(message.from().id(), url);
+			Bot.writeUsers();
+
+			bot.execute(new SendMessage(
+				message.chat().id(),
+				"Новий файл графіка '" + document.fileName() + "' встановлено!"
+			));
+
+			System.out.println(Bot.users);
+			return;
+		}
+
 		bot.execute(new SendMessage(
-			update.message().chat().id(),
-			"Новий файл графіка '" + update.message().document().fileName() + "' встановлено!"
+			message.chat().id(),
+			"Розмір файлу перевищує 650 КБ. Файл графіка не встановлено."
 		));
-
-		System.out.println(Bot.users);
 	}
 }
